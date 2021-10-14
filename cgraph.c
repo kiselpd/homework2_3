@@ -5,7 +5,6 @@
 #define SWAP(x, y) {int t; t = x; x = y; y = t; }    //swap two values
 #define DIGIT 10                                     //const of digit
 
-
 int TREE(int **array, int N);
 int SUM_OF_EDGE(int* array, int N);
 int LOOP(int x);
@@ -16,10 +15,8 @@ int main(void) {
 	FILE* file_graph;
 	int top = 0, first_top = 0, second_top = 0, check = 0, max_top = 1, error = 0;
 	char get_symbol;
-
 	int** arr = (int**)calloc(max_top, sizeof(int*));             //creating a array of pointers to pointers
 	arr[0] = (int*)calloc(max_top, sizeof(int));
-
 
 	file_graph = fopen("graph.dot", "w");                         //open the file for writing
 	fprintf(file_graph, "graph new{\n");                          //declaration the graph
@@ -44,7 +41,6 @@ int main(void) {
 		if (get_symbol == '\n') {
 			second_top = top;
 			top = 0;
-
 			if (first_top > second_top) 
 				SWAP(first_top, second_top);
 		}
@@ -58,18 +54,14 @@ int main(void) {
 				arr = (int**)realloc(arr, sizeof(int*) * MAX(first_top, second_top));
 
 				for (int i = 0; i < MAX(first_top, second_top); i++) {
-
-					if (!arr[i]) {
-						arr[i] = (int*)calloc(MAX(first_top, second_top), sizeof(int));
-
-					}                                                                             
+					if (!arr[i]) 
+						arr[i] = (int*)calloc(MAX(first_top, second_top), sizeof(int));       
 					else {
 						arr[i] = (int*)realloc(arr[i], sizeof(int) * MAX(first_top, second_top));
 						for (int j = max_top; j < MAX(first_top, second_top); j++) arr[i][j] = 0;
 					}
 					max_top = MAX(first_top, second_top);
 				}
-
 			}
 			arr[second_top - 1][first_top - 1] += 1;                //filling in the array(matrix)
 			first_top = 0;
@@ -79,13 +71,13 @@ int main(void) {
 	
 	error = TREE(arr, max_top);                            //error(graph is not a tree)
 
-	if (error) fprintf(file_graph, "label=\"This graph IS NOT a tree!\"}");
-	else fprintf(file_graph, "label=\"This graph IS a tree!\"}");
+	if (error) 
+		fprintf(file_graph, "label=\"This graph IS NOT a tree!\"}");
+	else 
+		fprintf(file_graph, "label=\"This graph IS a tree!\"}");
 
-	fclose(file_graph);                        //close file 
-
-	FREE_ARRAY(arr, max_top);                  //free array
-
+	FREE_ARRAY(arr, max_top);                             //free array
+	fclose(file_graph);
 	system("dot graph.dot -Tpng -o graph.png");           //creating file(png) with graph in terminal
 
 	return 0;
